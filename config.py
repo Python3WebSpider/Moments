@@ -8,8 +8,14 @@ DEVICE_NAME = 'MI_NOTE_Pro'
 
 # APP路径
 APP = os.path.abspath('.') + '/weixin.apk'
-# Appium地址
 
+# APP包名
+APP_PACKAGE = 'com.tencent.mm'
+
+# 入口类名
+APP_ACTIVITY = '.ui.LauncherUI'
+
+# Appium地址
 DRIVER_SERVER = 'http://localhost:4723/wd/hub'
 # 等待元素加载时间
 TIMEOUT = 300

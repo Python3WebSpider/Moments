@@ -20,7 +20,8 @@ class Moments():
         self.desired_caps = {
             'platformName': PLATFORM,
             'deviceName': DEVICE_NAME,
-            'app': APP
+            'appPackage': APP_PACKAGE,
+            'appActivity': APP_ACTIVITY
         }
         self.driver = webdriver.Remote(DRIVER_SERVER, self.desired_caps)
         self.wait = WebDriverWait(self.driver, TIMEOUT)
@@ -37,20 +38,20 @@ class Moments():
         """
         # 登录按钮
         login = self.wait.until(EC.presence_of_element_located((By.ID, 'com.tencent.mm:id/cjk')))
-        TouchAction(self.driver).tap(login).perform()
+        login.click()
         # 手机输入
         phone = self.wait.until(EC.presence_of_element_located((By.ID, 'com.tencent.mm:id/h2')))
         phone.set_text(USERNAME)
         # 下一步
         next = self.wait.until(EC.element_to_be_clickable((By.ID, 'com.tencent.mm:id/adj')))
-        TouchAction(self.driver).tap(next).perform()
+        next.click()
         # 密码
         password = self.wait.until(
             EC.presence_of_element_located((By.XPATH, '//*[@resource-id="com.tencent.mm:id/h2"][1]')))
         password.set_text(PASSWORD)
         # 提交
-        login = self.wait.until(EC.element_to_be_clickable((By.ID, 'com.tencent.mm:id/adj')))
-        TouchAction(self.driver).tap(login).perform()
+        submit = self.wait.until(EC.element_to_be_clickable((By.ID, 'com.tencent.mm:id/adj')))
+        submit.click()
     
     def enter(self):
         """
@@ -60,10 +61,10 @@ class Moments():
         # 选项卡
         tab = self.wait.until(
             EC.presence_of_element_located((By.XPATH, '//*[@resource-id="com.tencent.mm:id/bw3"][3]')))
-        TouchAction(self.driver).tap(tab).perform()
+        tab.click()
         # 朋友圈
         moments = self.wait.until(EC.presence_of_element_located((By.ID, 'com.tencent.mm:id/atz')))
-        TouchAction(self.driver).tap(moments).perform()
+        moments.click()
     
     def crawl(self):
         """
@@ -95,7 +96,7 @@ class Moments():
                         'date': date,
                     }
                     # 插入MongoDB
-                    self.collection.update({'nickname': nickname, 'content': content}, data, True)
+                    self.collection.update({'nickname': nickname, 'content': content}, {'$set': data}, True)
                     sleep(SCROLL_SLEEP_TIME)
                 except NoSuchElementException:
                     pass
